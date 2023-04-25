@@ -1,3 +1,4 @@
 import "./style.css";
+import { Display } from "./modules/Display.js";
 
-console.log("Hello");
+Display.init();

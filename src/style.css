@@ -10,10 +10,13 @@
 
 :root {
   --clr-dark: hsl(0, 0%, 20%);
+  --clr-medium-dark: hsl(0, 0%, 30%);
   --clr-light: hsl(0, 0%, 98%);
   --clr-medium-light: hsl(0, 0%, 90%);
 
   --clr-primary: hsl(207, 44%, 49%);
+
+  --fs-small: 1rem;
 }
 
 html,
@@ -57,11 +60,11 @@ aside {
   grid-template-rows: 1fr 50px;
 }
 
-section{
-    display: grid;
-    gap: 5px;
-    align-content: start;
-    padding: 1rem;
+section {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding: 1rem;
 }
 
 footer {
@@ -69,24 +72,66 @@ footer {
   place-items: center;
 }
 
-main{
-    padding: 1rem;
+main {
+  padding: 1rem;
+}
+
+/* Buttons */
+
+button {
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--fs-small);
+  text-align: start;
+}
+
+.btn-light{
+  color: var(--clr-light);
+}
+
+.btn-light:hover {
+  color: var(--clr-medium-light);
+}
+
+.btn-dark{
+  color: var(--clr-dark);
+}
+
+.btn-dark:hover{
+  color: var(--clr-medium-dark);
 }
 
 /* Lists */
 
-ul{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
-li{
-    cursor: pointer;
+li {
+  cursor: pointer;
+  font-size: var(--fs-small);
 }
 
-li:hover{
-    color: var(--clr-medium-light);
+li:hover {
+  color: var(--clr-medium-light);
+}
+
+.list-item {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  align-items: center;
+}
+
+.list-item > svg {
+  display: none;
+}
+
+.list-item:hover svg {
+  display: inline-block;
 }
 
 /* Utility classes */

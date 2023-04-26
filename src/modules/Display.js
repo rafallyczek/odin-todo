@@ -1,8 +1,7 @@
 import { Board } from "./Board.js";
 
-//Display is in charge of displaying content on page
 export class Display {
-  //For now dummy content
+
   static init() {
     this.displayPage();
   }
@@ -34,7 +33,7 @@ export class Display {
 
     authorInfo.appendChild(github);
     authorInfo.appendChild(text);
-    
+
     footer.appendChild(authorInfo);
 
     sidebar.appendChild(lists);

@@ -24,16 +24,17 @@ body {
   color: var(--clr-light);
 }
 
-h1{
-    margin: 0;
+h1,
+h2 {
+  margin: 0;
 }
 
-a{
-    color: var(--clr-light);
+a {
+  color: var(--clr-light);
 }
 
-a:hover{
-    color: var(--clr-medium-light);
+a:hover {
+  color: var(--clr-medium-light);
 }
 
 /* Layout */
@@ -44,37 +45,64 @@ a:hover{
   height: 100%;
 }
 
-header{
+header {
+  display: grid;
+  align-items: center;
+  grid-column: 1 / -1;
+  padding: 1rem;
+}
+
+aside {
+  display: grid;
+  grid-template-rows: 1fr 50px;
+}
+
+section{
     display: grid;
-    align-items: center;
-    grid-column: 1 / -1;
+    gap: 5px;
+    align-content: start;
     padding: 1rem;
 }
 
-aside{
-    display: grid;
-    grid-template-rows: 1fr 50px;
+footer {
+  display: grid;
+  place-items: center;
 }
 
-footer{
-    display: grid;
-    place-items: center;
+main{
+    padding: 1rem;
+}
+
+/* Lists */
+
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li{
+    cursor: pointer;
+}
+
+li:hover{
+    color: var(--clr-medium-light);
 }
 
 /* Utility classes */
 
-.bgc-dark{
-    background-color: var(--clr-dark);
+.bgc-dark {
+  background-color: var(--clr-dark);
 }
 
-.bgc-primary{
-    background-color: var(--clr-primary);
+.bgc-primary {
+  background-color: var(--clr-primary);
 }
 
-.bgc-light{
-    background-color: var(--clr-light);
+.bgc-light {
+  background-color: var(--clr-light);
 }
 
-.text-clr-dark{
-    color: var(--clr-dark);
+.text-clr-dark {
+  color: var(--clr-dark);
 }

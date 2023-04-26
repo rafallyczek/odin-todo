@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.js",
@@ -13,33 +14,35 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-        template: "./src/index.html",
+      template: "./src/index.html",
     }),
     new CssMinimizerPlugin(),
-    new MiniCssExtractPlugin()
+    new MiniCssExtractPlugin(),
   ],
   module: {
     rules: [
-        {
-            test: /\.css$/i,
-            use: [MiniCssExtractPlugin.loader, "css-loader"],
-        },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      },
     ],
   },
   optimization: {
     minimizer: [
-        "...",
-        new CssMinimizerPlugin({
-            test: /\.css$/i,
-            minimizerOptions: {
-                preset: [
-                    "default",
-                    {
-                        discardComments: { removeAll: true }
-                    }
-                ],
+      new TerserPlugin({
+        extractComments: false,
+      }),
+      new CssMinimizerPlugin({
+        test: /\.css$/i,
+        minimizerOptions: {
+          preset: [
+            "default",
+            {
+              discardComments: { removeAll: true },
             },
-        }),
+          ],
+        },
+      }),
     ],
   },
 };

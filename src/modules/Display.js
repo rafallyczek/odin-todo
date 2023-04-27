@@ -81,17 +81,21 @@ export class Display {
     main.classList.add("bgc-light");
     main.classList.add("text-clr-dark");
     main.textContent = "Choose list to see tasks.";
+    //Index of currently displayed list, -1 means no list is displayed
+    main.setAttribute("data-displayed-list-index", -1);
 
     content.appendChild(header);
     content.appendChild(sidebar);
     content.appendChild(main);
 
+    //Add avent listener to new list button
     this.attachNewListButtonEventListener();
   }
 
   static displayLists() {
     const lists = document.getElementById("lists");
     for (const [index, list] of Board.getBoard().entries()) {
+      //ToDoList
       const listItem = document.createElement("li");
       listItem.classList.add("list-item");
       listItem.classList.add("text-hoverable-light");
@@ -102,6 +106,7 @@ export class Display {
 
       listItem.appendChild(listTitle);
 
+      //Main list cannot be deleted
       if (index !== 0) {
         const deleteListButton = document.createElement("button");
         deleteListButton.classList.add("text-hoverable-light");
@@ -114,6 +119,8 @@ export class Display {
 
       lists.appendChild(listItem);
     }
+
+    //Add avent listeners to list's elements
     this.attachListsEventListeners();
   }
 
@@ -125,6 +132,7 @@ export class Display {
   static displayMain(listIndex) {
     const list = Board.getList(listIndex);
     const main = document.querySelector("main");
+    main.setAttribute("data-displayed-list-index", listIndex);
 
     const boardHeader = document.createElement("h2");
     boardHeader.textContent = list.getTitle();
@@ -147,6 +155,7 @@ export class Display {
     main.appendChild(tasks);
     main.appendChild(newTaskButton);
 
+    //Add avent listener to new task button
     this.attachNewTaskButtonEventListener();
   }
 
@@ -181,6 +190,7 @@ export class Display {
         this.clearMain();
         this.displayMain(listIndex);
       });
+      //Main list cannot be deleted
       if (i !== 0) {
         list.lastElementChild.addEventListener("click", () => {
           const listIndex = Number(
@@ -189,6 +199,15 @@ export class Display {
           Board.deleteList(listIndex);
           this.clearLists();
           this.displayLists();
+          const main = document.querySelector("main");
+          const displayedListIndex = Number(
+            main.getAttribute("data-displayed-list-index")
+          );
+          //If currently displayed list is deleted clear main
+          if (displayedListIndex === listIndex) {
+            this.clearMain();
+            main.textContent = "Choose list to see tasks.";
+          }
         });
       }
     }

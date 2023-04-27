@@ -16,6 +16,9 @@ export class Board {
   }
 
   static deleteList(index){
-    this.board.splice(index, 1);
+    //Main list cannot be deleted
+    if(index!==0){
+      this.board.splice(index, 1);
+    }
   }
 }

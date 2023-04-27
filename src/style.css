@@ -10,7 +10,7 @@
 
 :root {
   --clr-dark: hsl(0, 0%, 20%);
-  --clr-medium-dark: hsl(0, 0%, 30%);
+  --clr-medium-dark: hsl(0, 0%, 35%);
   --clr-light: hsl(0, 0%, 98%);
   --clr-medium-light: hsl(0, 0%, 90%);
 
@@ -27,17 +27,10 @@ body {
   color: var(--clr-light);
 }
 
+p,
 h1,
 h2 {
   margin: 0;
-}
-
-a {
-  color: var(--clr-light);
-}
-
-a:hover {
-  color: var(--clr-medium-light);
 }
 
 /* Layout */
@@ -60,20 +53,17 @@ aside {
   grid-template-rows: 1fr 50px;
 }
 
-section {
+section,
+main {
   display: grid;
-  gap: 1rem;
   align-content: start;
+  gap: 1rem;
   padding: 1rem;
 }
 
 footer {
   display: grid;
   place-items: center;
-}
-
-main {
-  padding: 1rem;
 }
 
 /* Buttons */
@@ -87,22 +77,6 @@ button {
   text-align: start;
 }
 
-.btn-light{
-  color: var(--clr-light);
-}
-
-.btn-light:hover {
-  color: var(--clr-medium-light);
-}
-
-.btn-dark{
-  color: var(--clr-dark);
-}
-
-.btn-dark:hover{
-  color: var(--clr-medium-dark);
-}
-
 /* Lists */
 
 ul {
@@ -114,10 +88,6 @@ ul {
 li {
   cursor: pointer;
   font-size: var(--fs-small);
-}
-
-li:hover {
-  color: var(--clr-medium-light);
 }
 
 .list-item {
@@ -150,4 +120,20 @@ li:hover {
 
 .text-clr-dark {
   color: var(--clr-dark);
+}
+
+.text-hoverable-light {
+  color: var(--clr-light);
+}
+
+.text-hoverable-light:hover{
+  color: var(--clr-medium-light);
+}
+
+.text-hoverable-dark {
+  color: var(--clr-dark);
+}
+
+.text-hoverable-dark:hover{
+  color: var(--clr-medium-dark);
 }

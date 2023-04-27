@@ -44,7 +44,7 @@ export class Display {
     lists.id = "lists";
 
     const newListButton = document.createElement("button");
-    newListButton.classList.add("btn-light");
+    newListButton.classList.add("text-hoverable-light");
     icon = document.createElement("i");
     icon.classList.add("fa-solid");
     icon.classList.add("fa-plus");
@@ -61,6 +61,7 @@ export class Display {
 
     const authorInfo = document.createElement("p");
     const github = document.createElement("a");
+    github.classList.add("text-hoverable-light");
     github.textContent = "rafallyczek";
     github.href = "https://github.com/rafallyczek";
     github.target = "_blank";
@@ -78,6 +79,7 @@ export class Display {
     const main = document.createElement("main");
     main.classList.add("bgc-light");
     main.classList.add("text-clr-dark");
+    main.textContent = "Choose list to see tasks.";
 
     content.appendChild(header);
     content.appendChild(sidebar);
@@ -89,6 +91,7 @@ export class Display {
     for (const list of Board.getBoard()) {
       const listItem = document.createElement("li");
       listItem.classList.add("list-item");
+      listItem.classList.add("text-hoverable-light");
       const text = document.createElement("span");
       text.textContent = list.getTitle();
       const icon = document.createElement("i");
@@ -105,22 +108,28 @@ export class Display {
     lists.textContent = "";
   }
 
-  static displayListTasks(list) {
+  static displayTasks(list) {
     this.clearBoard();
+    const main = document.querySelector("main");
 
     const boardHeader = document.createElement("h2");
     boardHeader.textContent = list.getTitle();
 
+    const tasks = document.createElement("ul");
+    tasks.id = "tasks";
+
     const newTaskButton = document.createElement("button");
     newTaskButton.classList.add("btn-dark");
-    icon = document.createElement("i");
+    newTaskButton.classList.add("text-hoverable-dark");
+    const icon = document.createElement("i");
     icon.classList.add("fa-solid");
     icon.classList.add("fa-plus");
-    text = document.createTextNode(" Add new task");
+    const text = document.createTextNode(" Add new task");
     newTaskButton.appendChild(icon);
     newTaskButton.appendChild(text);
 
     main.appendChild(boardHeader);
+    main.appendChild(tasks);
     main.appendChild(newTaskButton);
   }
 

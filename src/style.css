@@ -96,11 +96,11 @@ li {
   align-items: center;
 }
 
-.list-item > svg {
+.list-item > button {
   display: none;
 }
 
-.list-item:hover svg {
+.list-item:hover button {
   display: inline-block;
 }
 

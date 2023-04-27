@@ -45,6 +45,7 @@ export class Display {
 
     const newListButton = document.createElement("button");
     newListButton.classList.add("text-hoverable-light");
+    newListButton.id = "new-list-btn";
     icon = document.createElement("i");
     icon.classList.add("fa-solid");
     icon.classList.add("fa-plus");
@@ -84,23 +85,36 @@ export class Display {
     content.appendChild(header);
     content.appendChild(sidebar);
     content.appendChild(main);
+
+    this.attachNewListButtonEventListener();
   }
 
   static displayLists() {
     const lists = document.getElementById("lists");
-    for (const list of Board.getBoard()) {
+    for (const [index, list] of Board.getBoard().entries()) {
       const listItem = document.createElement("li");
       listItem.classList.add("list-item");
       listItem.classList.add("text-hoverable-light");
-      const text = document.createElement("span");
-      text.textContent = list.getTitle();
-      const icon = document.createElement("i");
-      icon.classList.add("fa-solid");
-      icon.classList.add("fa-xmark");
-      listItem.appendChild(text);
-      listItem.appendChild(icon);
+      listItem.setAttribute("data-index", index);
+
+      const listTitle = document.createElement("span");
+      listTitle.textContent = list.getTitle();
+
+      listItem.appendChild(listTitle);
+
+      if(index!==0){
+        const deleteListButton = document.createElement("button");
+        deleteListButton.classList.add("text-hoverable-light");
+        const icon = document.createElement("i");
+        icon.classList.add("fa-solid");
+        icon.classList.add("fa-xmark");
+        deleteListButton.appendChild(icon);
+        listItem.appendChild(deleteListButton);
+      }
+
       lists.appendChild(listItem);
     }
+    this.attachListsEventListeners();
   }
 
   static clearLists() {
@@ -108,8 +122,8 @@ export class Display {
     lists.textContent = "";
   }
 
-  static displayTasks(list) {
-    this.clearBoard();
+  static displayMain(listIndex) {
+    const list = Board.getList(listIndex);
     const main = document.querySelector("main");
 
     const boardHeader = document.createElement("h2");
@@ -121,6 +135,7 @@ export class Display {
     const newTaskButton = document.createElement("button");
     newTaskButton.classList.add("btn-dark");
     newTaskButton.classList.add("text-hoverable-dark");
+    newTaskButton.id = "new-task-btn";
     const icon = document.createElement("i");
     icon.classList.add("fa-solid");
     icon.classList.add("fa-plus");
@@ -133,8 +148,29 @@ export class Display {
     main.appendChild(newTaskButton);
   }
 
-  static clearBoard() {
+  static clearMain() {
     const main = document.querySelector("main");
     main.textContent = "";
+  }
+
+  static attachNewListButtonEventListener(){
+    const newListButton = document.getElementById("new-list-btn");
+    newListButton.addEventListener("click", () => {
+      console.log("newListButton clicked!");
+    });
+  }
+
+  static attachListsEventListeners(){
+    const lists = document.getElementById("lists").children;
+    for(const list of lists){
+      list.firstElementChild.addEventListener("click", (e) => {
+        const listIndex = Number(e.target.parentNode.getAttribute("data-index"));
+        this.clearMain();
+        this.displayMain(listIndex);
+      });
+      list.lastElementChild.addEventListener("click", (e) => {
+        console.log("Delete button clicked!");
+      });
+    }
   }
 }

@@ -10,4 +10,8 @@ export class Board {
   static getBoard() {
     return this.board;
   }
+
+  static getList(index){
+    return this.board[index];
+  }
 }

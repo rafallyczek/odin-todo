@@ -1,6 +1,9 @@
 import { Board } from "./Board.js";
 
 export class Display {
+
+  static NO_DISPLAYED_LIST = -1;
+
   static init() {
     this.displayPage();
     this.displayLists();
@@ -14,10 +17,13 @@ export class Display {
     header.classList.add("bgc-dark");
 
     const pageTitle = document.createElement("h1");
+
     let icon = document.createElement("i");
     icon.classList.add("fa-solid");
     icon.classList.add("fa-list-check");
+
     let text = document.createTextNode(" ToDo Notes");
+
     pageTitle.appendChild(icon);
     pageTitle.appendChild(text);
 
@@ -46,10 +52,12 @@ export class Display {
     const newListButton = document.createElement("button");
     newListButton.classList.add("text-hoverable-light");
     newListButton.id = "new-list-btn";
+
     icon = document.createElement("i");
     icon.classList.add("fa-solid");
     icon.classList.add("fa-plus");
     text = document.createTextNode(" Add new list");
+
     newListButton.appendChild(icon);
     newListButton.appendChild(text);
 
@@ -81,8 +89,7 @@ export class Display {
     main.classList.add("bgc-light");
     main.classList.add("text-clr-dark");
     main.textContent = "Choose list to see tasks.";
-    //Index of currently displayed list, -1 means no list is displayed
-    main.setAttribute("data-displayed-list-index", -1);
+    main.setAttribute("data-displayed-list-index", this.NO_DISPLAYED_LIST);
 
     content.appendChild(header);
     content.appendChild(sidebar);
@@ -110,10 +117,13 @@ export class Display {
       if (index !== 0) {
         const deleteListButton = document.createElement("button");
         deleteListButton.classList.add("text-hoverable-light");
+
         const icon = document.createElement("i");
         icon.classList.add("fa-solid");
         icon.classList.add("fa-xmark");
+
         deleteListButton.appendChild(icon);
+
         listItem.appendChild(deleteListButton);
       }
 
@@ -122,11 +132,6 @@ export class Display {
 
     //Add avent listeners to list's elements
     this.attachListsEventListeners();
-  }
-
-  static clearLists() {
-    const lists = document.getElementById("lists");
-    lists.textContent = "";
   }
 
   static displayMain(listIndex) {
@@ -157,6 +162,11 @@ export class Display {
 
     //Add avent listener to new task button
     this.attachNewTaskButtonEventListener();
+  }
+
+  static clearLists() {
+    const lists = document.getElementById("lists");
+    lists.textContent = "";
   }
 
   static clearMain() {

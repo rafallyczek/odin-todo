@@ -14,4 +14,8 @@ export class Board {
   static getList(index){
     return this.board[index];
   }
+
+  static deleteList(index){
+    this.board.splice(index, 1);
+  }
 }

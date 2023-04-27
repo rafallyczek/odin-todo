@@ -95,14 +95,14 @@ export class Display {
       const listItem = document.createElement("li");
       listItem.classList.add("list-item");
       listItem.classList.add("text-hoverable-light");
-      listItem.setAttribute("data-index", index);
+      listItem.id = `list${index}`;
 
       const listTitle = document.createElement("span");
       listTitle.textContent = list.getTitle();
 
       listItem.appendChild(listTitle);
 
-      if(index!==0){
+      if (index !== 0) {
         const deleteListButton = document.createElement("button");
         deleteListButton.classList.add("text-hoverable-light");
         const icon = document.createElement("i");
@@ -146,6 +146,8 @@ export class Display {
     main.appendChild(boardHeader);
     main.appendChild(tasks);
     main.appendChild(newTaskButton);
+
+    this.attachNewTaskButtonEventListener();
   }
 
   static clearMain() {
@@ -153,24 +155,42 @@ export class Display {
     main.textContent = "";
   }
 
-  static attachNewListButtonEventListener(){
+  static attachNewListButtonEventListener() {
     const newListButton = document.getElementById("new-list-btn");
     newListButton.addEventListener("click", () => {
       console.log("newListButton clicked!");
     });
   }
 
-  static attachListsEventListeners(){
+  static attachNewTaskButtonEventListener() {
+    const newTaskButton = document.getElementById("new-task-btn");
+    newTaskButton.addEventListener("click", () => {
+      console.log("newTaskButton clicked!");
+    });
+  }
+
+  static attachListsEventListeners() {
     const lists = document.getElementById("lists").children;
-    for(const list of lists){
-      list.firstElementChild.addEventListener("click", (e) => {
-        const listIndex = Number(e.target.parentNode.getAttribute("data-index"));
+    for (let i = 0; i < lists.length; i++) {
+      const list = lists[i];
+      list.firstElementChild.addEventListener("click", () => {
+        const listIndex = Number(
+          document.getElementById(`list${i}`).getAttribute("id").slice(-1)
+        );
+        console.log(listIndex);
         this.clearMain();
         this.displayMain(listIndex);
       });
-      list.lastElementChild.addEventListener("click", (e) => {
-        console.log("Delete button clicked!");
-      });
+      if (i !== 0) {
+        list.lastElementChild.addEventListener("click", () => {
+          const listIndex = Number(
+            document.getElementById(`list${i}`).getAttribute("id").slice(-1)
+          );
+          Board.deleteList(listIndex);
+          this.clearLists();
+          this.displayLists();
+        });
+      }
     }
   }
 }

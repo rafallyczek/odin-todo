@@ -187,6 +187,7 @@ export class Display {
 
     //Add avent listener to new task button
     this.attachNewTaskButtonEventListener();
+    this.attachTasksEventListeners(listIndex);
   }
 
   static clearLists() {
@@ -250,5 +251,28 @@ export class Display {
       this.clearMain();
       main.textContent = "Choose list to see tasks.";
     }
+  }
+
+  static attachTasksEventListeners(listIndex){
+    const tasks = document.getElementById("tasks").children;
+    for (let i = 0; i < tasks.length; i++) {
+      const task = tasks[i];
+      const taskIndex = Number(
+        document.getElementById(`to-do-task${i}`).getAttribute("id").slice(-1)
+      );
+      task.lastElementChild.addEventListener("click", () => {
+        this.deleteTask(listIndex, taskIndex);
+      });
+    }
+  }
+
+  static deleteTask(listIndex, taskIndex){
+    Board.getList(listIndex).deleteToDoTask(taskIndex);
+    const main = document.querySelector("main");
+    const displayedListIndex = Number(
+      main.getAttribute("data-displayed-list-index")
+    );
+    this.clearMain();
+    this.displayMain(displayedListIndex);
   }
 }

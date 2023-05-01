@@ -192,34 +192,38 @@ export class Display {
     const lists = document.getElementById("lists").children;
     for (let i = 0; i < lists.length; i++) {
       const list = lists[i];
+      const listIndex = Number(
+        document.getElementById(`list${i}`).getAttribute("id").slice(-1)
+      );
       list.firstElementChild.addEventListener("click", () => {
-        const listIndex = Number(
-          document.getElementById(`list${i}`).getAttribute("id").slice(-1)
-        );
-        console.log(listIndex);
-        this.clearMain();
-        this.displayMain(listIndex);
+        this.displayList(listIndex);
       });
       //Main list cannot be deleted
       if (i !== 0) {
         list.lastElementChild.addEventListener("click", () => {
-          const listIndex = Number(
-            document.getElementById(`list${i}`).getAttribute("id").slice(-1)
-          );
-          Board.deleteList(listIndex);
-          this.clearLists();
-          this.displayLists();
-          const main = document.querySelector("main");
-          const displayedListIndex = Number(
-            main.getAttribute("data-displayed-list-index")
-          );
-          //If currently displayed list is deleted clear main
-          if (displayedListIndex === listIndex) {
-            this.clearMain();
-            main.textContent = "Choose list to see tasks.";
-          }
+          this.deleteList(listIndex);
         });
       }
+    }
+  }
+
+  static displayList(listIndex){
+    this.clearMain();
+    this.displayMain(listIndex);
+  }
+
+  static deleteList(listIndex){
+    Board.deleteList(listIndex);
+    this.clearLists();
+    this.displayLists();
+    const main = document.querySelector("main");
+    const displayedListIndex = Number(
+      main.getAttribute("data-displayed-list-index")
+    );
+    //If currently displayed list is deleted clear main
+    if (displayedListIndex === listIndex) {
+      this.clearMain();
+      main.textContent = "Choose list to see tasks.";
     }
   }
 }

@@ -1,4 +1,4 @@
-import { ToDoTaks} from "./ToDoTask.js";
+import { ToDoTask } from "./ToDoTask.js";
 
 export class ToDoList {
     constructor(title){
@@ -8,5 +8,9 @@ export class ToDoList {
 
     getTitle(){
         return this.title;
+    }
+
+    deleteToDoTask(index){
+        this.toDoItems.splice(index, 1);
     }
 }

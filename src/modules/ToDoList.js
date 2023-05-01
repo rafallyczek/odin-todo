@@ -3,14 +3,18 @@ import { ToDoTask } from "./ToDoTask.js";
 export class ToDoList {
     constructor(title){
         this.title = title;
-        this.toDoItems = [];
+        this.toDoTasks = [];
     }
 
     getTitle(){
         return this.title;
     }
 
+    getToDoTasks(){
+        return this.toDoTasks;
+    }
+
     deleteToDoTask(index){
-        this.toDoItems.splice(index, 1);
+        this.toDoTasks.splice(index, 1);
     }
 }

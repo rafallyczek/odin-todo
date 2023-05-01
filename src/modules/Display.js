@@ -145,6 +145,31 @@ export class Display {
     const tasks = document.createElement("ul");
     tasks.id = "tasks";
 
+    for (const [index, todotask] of Board.getList(listIndex).getToDoTasks().entries()){
+      const listItem = document.createElement("li");
+      listItem.classList.add("list-item");
+      listItem.classList.add("text-hoverable-dark");
+      listItem.id = `to-do-task${index}`;
+
+      const taskTitle = document.createElement("span");
+      taskTitle.textContent = todotask.getTitle();
+
+      listItem.appendChild(taskTitle);
+
+      const deleteTaskButton = document.createElement("button");
+      deleteTaskButton.classList.add("text-hoverable-dark");
+
+      const icon = document.createElement("i");
+      icon.classList.add("fa-solid");
+      icon.classList.add("fa-xmark");
+
+      deleteTaskButton.appendChild(icon);
+
+      listItem.appendChild(deleteTaskButton);
+      
+      tasks.appendChild(listItem);
+    }
+
     const newTaskButton = document.createElement("button");
     newTaskButton.classList.add("btn-dark");
     newTaskButton.classList.add("text-hoverable-dark");

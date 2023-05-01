@@ -3,4 +3,8 @@ export class ToDoTask {
         this.title = title;
         this.description = description;
     }
+
+    getTitle(){
+        return this.title;
+    }
 }

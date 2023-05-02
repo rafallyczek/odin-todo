@@ -257,13 +257,11 @@ export class Display {
       if (newListInput.value.trim() !== "") {
         Board.addList(newListInput.value);
         newListForm.style.display = "none";
-        newListInput.value = "";
         newListButton.style.display = "block";
         this.clearLists();
         this.displayLists();
-      } else {
-        newListInput.value = "";
       }
+      newListInput.value = "";
     });
   }
 

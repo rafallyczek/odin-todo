@@ -15,6 +15,10 @@ export class Board {
     return this.board[index];
   }
 
+  static addList(title){
+    this.board.push(new ToDoList(title));
+  }
+
   static deleteList(index){
     //Main list cannot be deleted
     if(index!==0){

@@ -1,7 +1,6 @@
 import { Board } from "./Board.js";
 
 export class Display {
-
   static NO_DISPLAYED_LIST = -1;
 
   static init() {
@@ -50,6 +49,7 @@ export class Display {
     lists.id = "lists";
 
     const newListButton = document.createElement("button");
+    newListButton.classList.add("btn");
     newListButton.classList.add("text-hoverable-light");
     newListButton.id = "new-list-btn";
 
@@ -61,9 +61,30 @@ export class Display {
     newListButton.appendChild(icon);
     newListButton.appendChild(text);
 
+    const newListForm = document.createElement("div");
+    newListForm.classList.add("form");
+    newListForm.id = "new-list-form";
+    const titleField = document.createElement("input");
+    titleField.type = "text";
+    const cancelButton = document.createElement("button");
+    cancelButton.classList.add("cancel-btn");
+    cancelButton.classList.add("text-clr-light");
+    cancelButton.id = "new-list-cancel";
+    cancelButton.textContent = "Cancel";
+    const addButton = document.createElement("button");
+    addButton.classList.add("submit-btn");
+    addButton.classList.add("text-clr-light");
+    addButton.id = "new-list-add";
+    addButton.textContent = "Add";
+
+    newListForm.appendChild(titleField);
+    newListForm.appendChild(cancelButton);
+    newListForm.appendChild(addButton);
+
     listsContainer.appendChild(listsHeader);
     listsContainer.appendChild(lists);
     listsContainer.appendChild(newListButton);
+    listsContainer.appendChild(newListForm);
 
     //Footer
     const footer = document.createElement("footer");
@@ -95,8 +116,10 @@ export class Display {
     content.appendChild(sidebar);
     content.appendChild(main);
 
-    //Add avent listener to new list button
+    //Add avent listeners
     this.attachNewListButtonEventListener();
+    this.attachNewListCancelEventListener();
+    this.attachNewListAddEventListener();
   }
 
   static displayLists() {
@@ -116,6 +139,7 @@ export class Display {
       //Main list cannot be deleted
       if (index !== 0) {
         const deleteListButton = document.createElement("button");
+        deleteListButton.classList.add("btn");
         deleteListButton.classList.add("text-hoverable-light");
 
         const icon = document.createElement("i");
@@ -145,7 +169,9 @@ export class Display {
     const tasks = document.createElement("ul");
     tasks.id = "tasks";
 
-    for (const [index, todotask] of Board.getList(listIndex).getToDoTasks().entries()){
+    for (const [index, todotask] of Board.getList(listIndex)
+      .getToDoTasks()
+      .entries()) {
       const listItem = document.createElement("li");
       listItem.classList.add("list-item");
       listItem.classList.add("text-hoverable-dark");
@@ -166,12 +192,12 @@ export class Display {
       deleteTaskButton.appendChild(icon);
 
       listItem.appendChild(deleteTaskButton);
-      
+
       tasks.appendChild(listItem);
     }
 
     const newTaskButton = document.createElement("button");
-    newTaskButton.classList.add("btn-dark");
+    newTaskButton.classList.add("btn");
     newTaskButton.classList.add("text-hoverable-dark");
     newTaskButton.id = "new-task-btn";
     const icon = document.createElement("i");
@@ -203,7 +229,41 @@ export class Display {
   static attachNewListButtonEventListener() {
     const newListButton = document.getElementById("new-list-btn");
     newListButton.addEventListener("click", () => {
-      console.log("newListButton clicked!");
+      const newListForm = document.getElementById("new-list-form");
+      const newListButton = document.getElementById("new-list-btn");
+      newListButton.style.display = "none";
+      newListForm.style.display = "grid";
+    });
+  }
+
+  static attachNewListCancelEventListener() {
+    const newListCancel = document.getElementById("new-list-cancel");
+    newListCancel.addEventListener("click", () => {
+      const newListForm = document.getElementById("new-list-form");
+      const newListInput = newListForm.firstElementChild;
+      const newListButton = document.getElementById("new-list-btn");
+      newListForm.style.display = "none";
+      newListInput.value = "";
+      newListButton.style.display = "block";
+    });
+  }
+
+  static attachNewListAddEventListener() {
+    const newListAdd = document.getElementById("new-list-add");
+    newListAdd.addEventListener("click", () => {
+      const newListForm = document.getElementById("new-list-form");
+      const newListInput = newListForm.firstElementChild;
+      const newListButton = document.getElementById("new-list-btn");
+      if (newListInput.value.trim() !== "") {
+        Board.addList(newListInput.value);
+        newListForm.style.display = "none";
+        newListInput.value = "";
+        newListButton.style.display = "block";
+        this.clearLists();
+        this.displayLists();
+      } else {
+        newListInput.value = "";
+      }
     });
   }
 
@@ -233,12 +293,12 @@ export class Display {
     }
   }
 
-  static displayList(listIndex){
+  static displayList(listIndex) {
     this.clearMain();
     this.displayMain(listIndex);
   }
 
-  static deleteList(listIndex){
+  static deleteList(listIndex) {
     Board.deleteList(listIndex);
     this.clearLists();
     this.displayLists();
@@ -253,7 +313,7 @@ export class Display {
     }
   }
 
-  static attachTasksEventListeners(){
+  static attachTasksEventListeners() {
     const tasks = document.getElementById("tasks").children;
     for (let i = 0; i < tasks.length; i++) {
       const task = tasks[i];
@@ -266,7 +326,7 @@ export class Display {
     }
   }
 
-  static deleteTask(taskIndex){
+  static deleteTask(taskIndex) {
     const main = document.querySelector("main");
     const displayedListIndex = Number(
       main.getAttribute("data-displayed-list-index")

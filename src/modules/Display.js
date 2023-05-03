@@ -183,6 +183,7 @@ export class Display {
       listItem.appendChild(taskTitle);
 
       const deleteTaskButton = document.createElement("button");
+      deleteTaskButton.classList.add("btn");
       deleteTaskButton.classList.add("text-hoverable-dark");
 
       const icon = document.createElement("i");
@@ -207,25 +208,55 @@ export class Display {
     newTaskButton.appendChild(icon);
     newTaskButton.appendChild(text);
 
+    const newTaskForm = document.createElement("div");
+    newTaskForm.classList.add("form");
+    newTaskForm.id = "new-task-form";
+    const titleField = document.createElement("input");
+    titleField.type = "text";
+    const cancelButton = document.createElement("button");
+    cancelButton.classList.add("cancel-btn");
+    cancelButton.classList.add("text-clr-light");
+    cancelButton.id = "new-task-cancel";
+    cancelButton.textContent = "Cancel";
+    const addButton = document.createElement("button");
+    addButton.classList.add("submit-btn");
+    addButton.classList.add("text-clr-light");
+    addButton.id = "new-task-add";
+    addButton.textContent = "Add";
+
+    newTaskForm.appendChild(titleField);
+    newTaskForm.appendChild(cancelButton);
+    newTaskForm.appendChild(addButton);
+
     main.appendChild(boardHeader);
     main.appendChild(tasks);
     main.appendChild(newTaskButton);
+    main.appendChild(newTaskForm);
 
-    //Add avent listener to new task button
+    //Add avent listeners to task's elements
     this.attachNewTaskButtonEventListener();
+    this.attachNewTaskCancelEventListener();
+    this.attachNewTaskAddEventListener();
     this.attachTasksEventListeners();
   }
 
+  //Content clearing functions
+
+  //Clear lists in sidebar
   static clearLists() {
     const lists = document.getElementById("lists");
     lists.textContent = "";
   }
 
+  //Clear main
   static clearMain() {
     const main = document.querySelector("main");
     main.textContent = "";
   }
 
+  //Attaching event listeners
+
+  //Display new list form when Add new list button is clicked
   static attachNewListButtonEventListener() {
     const newListButton = document.getElementById("new-list-btn");
     newListButton.addEventListener("click", () => {
@@ -236,6 +267,7 @@ export class Display {
     });
   }
 
+  //Hide and reset new list form
   static attachNewListCancelEventListener() {
     const newListCancel = document.getElementById("new-list-cancel");
     newListCancel.addEventListener("click", () => {
@@ -248,6 +280,7 @@ export class Display {
     });
   }
 
+  //Add new list and hide form
   static attachNewListAddEventListener() {
     const newListAdd = document.getElementById("new-list-add");
     newListAdd.addEventListener("click", () => {
@@ -265,13 +298,53 @@ export class Display {
     });
   }
 
+  //Display new task form when Add new ltask button is clicked
   static attachNewTaskButtonEventListener() {
     const newTaskButton = document.getElementById("new-task-btn");
     newTaskButton.addEventListener("click", () => {
-      console.log("newTaskButton clicked!");
+      const newTaskForm = document.getElementById("new-task-form");
+      const newTaskButton = document.getElementById("new-task-btn");
+      newTaskButton.style.display = "none";
+      newTaskForm.style.display = "grid";
     });
   }
 
+  //Hide and reset new task form
+  static attachNewTaskCancelEventListener() {
+    const newTaskCancel = document.getElementById("new-task-cancel");
+    newTaskCancel.addEventListener("click", () => {
+      const newTaskForm = document.getElementById("new-task-form");
+      const newTaskInput = newTaskForm.firstElementChild;
+      const newTaskButton = document.getElementById("new-task-btn");
+      newTaskForm.style.display = "none";
+      newTaskInput.value = "";
+      newTaskButton.style.display = "block";
+    });
+  }
+
+  //Add new task and hide form
+  static attachNewTaskAddEventListener() {
+    const newTaskAdd = document.getElementById("new-task-add");
+    newTaskAdd.addEventListener("click", () => {
+      const newTaskForm = document.getElementById("new-task-form");
+      const newTaskInput = newTaskForm.firstElementChild;
+      const newTaskButton = document.getElementById("new-task-btn");
+      if (newTaskInput.value.trim() !== "") {
+        const main = document.querySelector("main");
+        const listIndex = Number(
+          main.getAttribute("data-displayed-list-index")
+        );
+        Board.getList(listIndex).addToDoTask(newTaskInput.value, "default");
+        newTaskForm.style.display = "none";
+        newTaskButton.style.display = "block";
+        this.clearMain();
+        this.displayMain(listIndex);
+      }
+      newTaskInput.value = "";
+    });
+  }
+
+  //Display list in main or delete list when button is clicked
   static attachListsEventListeners() {
     const lists = document.getElementById("lists").children;
     for (let i = 0; i < lists.length; i++) {
@@ -291,11 +364,29 @@ export class Display {
     }
   }
 
+  //Delete task when button is clicked
+  static attachTasksEventListeners() {
+    const tasks = document.getElementById("tasks").children;
+    for (let i = 0; i < tasks.length; i++) {
+      const task = tasks[i];
+      const taskIndex = Number(
+        document.getElementById(`to-do-task${i}`).getAttribute("id").slice(-1)
+      );
+      task.lastElementChild.addEventListener("click", () => {
+        this.deleteTask(taskIndex);
+      });
+    }
+  }
+
+  //Handling display after deleting or choosing elements
+
+  //Display list details in main
   static displayList(listIndex) {
     this.clearMain();
     this.displayMain(listIndex);
   }
 
+  //Handle list deletion
   static deleteList(listIndex) {
     Board.deleteList(listIndex);
     this.clearLists();
@@ -311,19 +402,7 @@ export class Display {
     }
   }
 
-  static attachTasksEventListeners() {
-    const tasks = document.getElementById("tasks").children;
-    for (let i = 0; i < tasks.length; i++) {
-      const task = tasks[i];
-      const taskIndex = Number(
-        document.getElementById(`to-do-task${i}`).getAttribute("id").slice(-1)
-      );
-      task.lastElementChild.addEventListener("click", () => {
-        this.deleteTask(taskIndex);
-      });
-    }
-  }
-
+  //Handle task deletion
   static deleteTask(taskIndex) {
     const main = document.querySelector("main");
     const displayedListIndex = Number(

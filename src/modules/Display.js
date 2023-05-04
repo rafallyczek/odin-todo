@@ -64,8 +64,18 @@ export class Display {
     const newListForm = document.createElement("div");
     newListForm.classList.add("form");
     newListForm.id = "new-list-form";
+
+    const inputGroup = document.createElement("div");
+    inputGroup.classList.add("input-group");
+    const titleLabel = document.createElement("label");
+    titleLabel.textContent = "Title";
+    titleLabel.htmlFor = "list-title";
     const titleField = document.createElement("input");
+    titleField.id = "list-title";
     titleField.type = "text";
+    inputGroup.appendChild(titleLabel);
+    inputGroup.appendChild(titleField);
+
     const cancelButton = document.createElement("button");
     cancelButton.classList.add("cancel-btn");
     cancelButton.classList.add("text-clr-light");
@@ -77,7 +87,7 @@ export class Display {
     addButton.id = "new-list-add";
     addButton.textContent = "Add";
 
-    newListForm.appendChild(titleField);
+    newListForm.appendChild(inputGroup);
     newListForm.appendChild(cancelButton);
     newListForm.appendChild(addButton);
 
@@ -177,10 +187,20 @@ export class Display {
       listItem.classList.add("text-hoverable-dark");
       listItem.id = `to-do-task${index}`;
 
+      const taskContainer = document.createElement("div");
+      taskContainer.classList.add("task");
+
       const taskTitle = document.createElement("span");
       taskTitle.textContent = todotask.getTitle();
 
-      listItem.appendChild(taskTitle);
+      const taskDescription = document.createElement("span");
+      taskDescription.classList.add("description");
+      taskDescription.textContent = todotask.getDescription();
+
+      taskContainer.appendChild(taskTitle);
+      taskContainer.appendChild(taskDescription);
+
+      listItem.appendChild(taskContainer);
 
       const deleteTaskButton = document.createElement("button");
       deleteTaskButton.classList.add("btn");
@@ -211,8 +231,44 @@ export class Display {
     const newTaskForm = document.createElement("div");
     newTaskForm.classList.add("form");
     newTaskForm.id = "new-task-form";
+
+    let inputGroup = document.createElement("div");
+    inputGroup.classList.add("input-group");
+    const titleLabel = document.createElement("label");
+    titleLabel.textContent = "Title";
+    titleLabel.htmlFor = "task-title";
     const titleField = document.createElement("input");
+    titleField.id = "task-title";
     titleField.type = "text";
+    inputGroup.appendChild(titleLabel);
+    inputGroup.appendChild(titleField);
+    newTaskForm.appendChild(inputGroup);
+
+    inputGroup = document.createElement("div");
+    inputGroup.classList.add("input-group");
+    const descriptionLabel = document.createElement("label");
+    descriptionLabel.textContent = "Description";
+    descriptionLabel.htmlFor = "task-description";
+    const descriptionField = document.createElement("textarea");
+    descriptionField.id = "task-description";
+    inputGroup.appendChild(descriptionLabel);
+    inputGroup.appendChild(descriptionField);
+    newTaskForm.appendChild(inputGroup);
+
+    inputGroup = document.createElement("div");
+    inputGroup.classList.add("input-group");
+    const dateLabel = document.createElement("label");
+    dateLabel.textContent = "Date";
+    dateLabel.htmlFor = "task-date";
+    const dateField = document.createElement("input");
+    dateField.id = "task-date";
+    dateField.type = "date";
+    dateField.valueAsDate = new Date();
+    dateField.disabled = true;
+    inputGroup.appendChild(dateLabel);
+    inputGroup.appendChild(dateField);
+    newTaskForm.appendChild(inputGroup);
+
     const cancelButton = document.createElement("button");
     cancelButton.classList.add("cancel-btn");
     cancelButton.classList.add("text-clr-light");
@@ -224,7 +280,6 @@ export class Display {
     addButton.id = "new-task-add";
     addButton.textContent = "Add";
 
-    newTaskForm.appendChild(titleField);
     newTaskForm.appendChild(cancelButton);
     newTaskForm.appendChild(addButton);
 
@@ -272,7 +327,7 @@ export class Display {
     const newListCancel = document.getElementById("new-list-cancel");
     newListCancel.addEventListener("click", () => {
       const newListForm = document.getElementById("new-list-form");
-      const newListInput = newListForm.firstElementChild;
+      const newListInput = document.getElementById("list-title");
       const newListButton = document.getElementById("new-list-btn");
       newListForm.style.display = "none";
       newListInput.value = "";
@@ -285,7 +340,7 @@ export class Display {
     const newListAdd = document.getElementById("new-list-add");
     newListAdd.addEventListener("click", () => {
       const newListForm = document.getElementById("new-list-form");
-      const newListInput = newListForm.firstElementChild;
+      const newListInput = document.getElementById("list-title");
       const newListButton = document.getElementById("new-list-btn");
       if (newListInput.value.trim() !== "") {
         Board.addList(newListInput.value);
@@ -314,10 +369,14 @@ export class Display {
     const newTaskCancel = document.getElementById("new-task-cancel");
     newTaskCancel.addEventListener("click", () => {
       const newTaskForm = document.getElementById("new-task-form");
-      const newTaskInput = newTaskForm.firstElementChild;
+      const newTaskTitle = document.getElementById("task-title");
+      const newTaskDescription = document.getElementById("task-description");
+      const newTaskDate = document.getElementById("task-date");
       const newTaskButton = document.getElementById("new-task-btn");
       newTaskForm.style.display = "none";
-      newTaskInput.value = "";
+      newTaskTitle.value = "";
+      newTaskDescription.value = "";
+      newTaskDate.valueAsDate = new Date();
       newTaskButton.style.display = "block";
     });
   }
@@ -327,20 +386,24 @@ export class Display {
     const newTaskAdd = document.getElementById("new-task-add");
     newTaskAdd.addEventListener("click", () => {
       const newTaskForm = document.getElementById("new-task-form");
-      const newTaskInput = newTaskForm.firstElementChild;
+      const newTaskTitle = document.getElementById("task-title");
+      const newTaskDescription = document.getElementById("task-description");
+      const newTaskDate = document.getElementById("task-date");
       const newTaskButton = document.getElementById("new-task-btn");
-      if (newTaskInput.value.trim() !== "") {
+      if (newTaskTitle.value.trim() !== "") {
         const main = document.querySelector("main");
         const listIndex = Number(
           main.getAttribute("data-displayed-list-index")
         );
-        Board.getList(listIndex).addToDoTask(newTaskInput.value, "default");
+        Board.getList(listIndex).addToDoTask(newTaskTitle.value, newTaskDescription.value);
         newTaskForm.style.display = "none";
         newTaskButton.style.display = "block";
         this.clearMain();
         this.displayMain(listIndex);
       }
-      newTaskInput.value = "";
+      newTaskTitle.value = "";
+      newTaskDescription.value = "";
+      newTaskDate.valueAsDate = new Date();
     });
   }
 

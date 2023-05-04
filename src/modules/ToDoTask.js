@@ -7,4 +7,8 @@ export class ToDoTask {
     getTitle(){
         return this.title;
     }
+
+    getDescription(){
+        return this.description;
+    }
 }

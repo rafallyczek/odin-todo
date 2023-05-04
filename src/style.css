@@ -19,7 +19,8 @@
 
   --clr-secondary: hsl(0, 44%, 49%);
 
-  --fs-small: 1rem;
+  --fs-small: .8rem;
+  --fs-medium: 1rem;
 }
 
 html,
@@ -69,6 +70,10 @@ footer {
   place-items: center;
 }
 
+.task{
+  display: grid;
+}
+
 /* Buttons */
 
 .btn {
@@ -76,7 +81,7 @@ footer {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: var(--fs-small);
+  font-size: var(--fs-medium);
   text-align: start;
 }
 
@@ -117,18 +122,35 @@ input {
   border: 1px solid var(--clr-dark);
   border-radius: 0.2rem;
   background-color: var(--clr-light);
-  grid-column: 1 / -1;
 }
 
 input:focus {
   outline: 1px solid var(--clr-primary-dark);
 }
 
+textarea{
+  padding: 0.3rem;
+  resize: vertical;
+}
+
+.input-group{
+  grid-column: 1 / -1;
+}
+
+.input-group > *{
+  width: 100%;
+}
+
+label{
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+}
+
 /* Forms */
 
 .form {
   display: grid;
-  grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
   /* Computed width of form div in sidebar */
   width: 218px; 
@@ -151,7 +173,7 @@ ul {
 
 li {
   cursor: pointer;
-  font-size: var(--fs-small);
+  font-size: var(--fs-medium);
 }
 
 .list-item {
@@ -166,6 +188,10 @@ li {
 
 .list-item:hover button {
   display: inline-block;
+}
+
+.description{
+  font-size: var(--fs-small);
 }
 
 /* Utility classes */

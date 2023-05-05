@@ -1,7 +1,8 @@
 export class ToDoTask {
-    constructor(title, description){
+    constructor(title, description, date){
         this.title = title;
         this.description = description;
+        this.date = date;
     }
 
     getTitle(){
@@ -10,5 +11,9 @@ export class ToDoTask {
 
     getDescription(){
         return this.description;
+    }
+
+    getDate(){
+        return this.date;
     }
 }

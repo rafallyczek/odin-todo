@@ -13,6 +13,7 @@
   --clr-medium-dark: hsl(0, 0%, 35%);
   --clr-light: hsl(0, 0%, 98%);
   --clr-medium-light: hsl(0, 0%, 90%);
+  --clr-gray: hsl(0, 0%, 80%);
 
   --clr-primary: hsl(207, 44%, 49%);
   --clr-primary-dark: hsl(207, 44%, 30%);
@@ -21,6 +22,7 @@
 
   --fs-small: .8rem;
   --fs-medium: 1rem;
+  --fs-big: 1.2rem;
 }
 
 html,
@@ -72,6 +74,9 @@ footer {
 
 .task{
   display: grid;
+  grid-template-columns: min-content 1fr;
+  gap: .3rem;
+  padding: .4rem .5rem;
 }
 
 /* Buttons */
@@ -174,24 +179,37 @@ ul {
 li {
   cursor: pointer;
   font-size: var(--fs-medium);
+  border-radius: .3rem;
 }
 
 .list-item {
   display: grid;
-  grid-template-columns: 1fr min-content;
+  grid-template-columns: 1fr 3ch;
   align-items: center;
 }
 
 .list-item > button {
-  display: none;
+  visibility: hidden;
 }
 
 .list-item:hover button {
-  display: inline-block;
+  visibility: visible;
+}
+
+.title{
+  align-self: baseline;
+  font-size: var(--fs-big);
+}
+
+.date{
+  align-self: baseline;
+  font-size: var(--fs-small);
+  color: var(--clr-medium-dark);
 }
 
 .description{
-  font-size: var(--fs-small);
+  grid-column: 1 / -1;
+  overflow-wrap: break-word;
 }
 
 /* Utility classes */
@@ -200,12 +218,16 @@ li {
   background-color: var(--clr-dark);
 }
 
-.bgc-primary {
-  background-color: var(--clr-primary);
-}
-
 .bgc-light {
   background-color: var(--clr-light);
+}
+
+.bgc-gray{
+  background-color: var(--clr-gray);
+}
+
+.bgc-primary {
+  background-color: var(--clr-primary);
 }
 
 .text-clr-dark {

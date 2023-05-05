@@ -14,8 +14,8 @@ export class ToDoList {
         return this.toDoTasks;
     }
 
-    addToDoTask(title, description){
-        this.toDoTasks.push(new ToDoTask(title, description));
+    addToDoTask(title, description, date){
+        this.toDoTasks.push(new ToDoTask(title, description, date));
     }
 
     deleteToDoTask(index){

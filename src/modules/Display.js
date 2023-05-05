@@ -1,4 +1,5 @@
 import { Board } from "./Board.js";
+import { format, parseISO } from "date-fns";
 
 export class Display {
   static NO_DISPLAYED_LIST = -1;
@@ -184,6 +185,7 @@ export class Display {
       .entries()) {
       const listItem = document.createElement("li");
       listItem.classList.add("list-item");
+      listItem.classList.add("bgc-gray");
       listItem.classList.add("text-hoverable-dark");
       listItem.id = `to-do-task${index}`;
 
@@ -191,13 +193,19 @@ export class Display {
       taskContainer.classList.add("task");
 
       const taskTitle = document.createElement("span");
+      taskTitle.classList.add("title");
       taskTitle.textContent = todotask.getTitle();
+
+      const taskDate = document.createElement("span");
+      taskDate.classList.add("date");
+      taskDate.textContent = format(parseISO(todotask.getDate()), "dd-MM-yyyy");
 
       const taskDescription = document.createElement("span");
       taskDescription.classList.add("description");
       taskDescription.textContent = todotask.getDescription();
 
       taskContainer.appendChild(taskTitle);
+      taskContainer.appendChild(taskDate);
       taskContainer.appendChild(taskDescription);
 
       listItem.appendChild(taskContainer);
@@ -264,7 +272,6 @@ export class Display {
     dateField.id = "task-date";
     dateField.type = "date";
     dateField.valueAsDate = new Date();
-    dateField.disabled = true;
     inputGroup.appendChild(dateLabel);
     inputGroup.appendChild(dateField);
     newTaskForm.appendChild(inputGroup);
@@ -395,7 +402,7 @@ export class Display {
         const listIndex = Number(
           main.getAttribute("data-displayed-list-index")
         );
-        Board.getList(listIndex).addToDoTask(newTaskTitle.value, newTaskDescription.value);
+        Board.getList(listIndex).addToDoTask(newTaskTitle.value, newTaskDescription.value, newTaskDate.value);
         newTaskForm.style.display = "none";
         newTaskButton.style.display = "block";
         this.clearMain();

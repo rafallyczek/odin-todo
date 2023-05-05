@@ -186,7 +186,7 @@ export class Display {
       const listItem = document.createElement("li");
       listItem.classList.add("list-item");
       listItem.classList.add("bgc-gray");
-      listItem.classList.add("text-hoverable-dark");
+      listItem.classList.add("text-dark");
       listItem.id = `to-do-task${index}`;
 
       const taskContainer = document.createElement("div");

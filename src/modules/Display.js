@@ -147,18 +147,32 @@ export class Display {
 
       listItem.appendChild(listTitle);
 
-      //Main list cannot be deleted
+      //Main list cannot be deleted nor edited
       if (index !== 0) {
+        const editListButton = document.createElement("button");
+        editListButton.classList.add("btn");
+        editListButton.classList.add("text-hoverable-light");
+        editListButton.title = "Edit list";
+
         const deleteListButton = document.createElement("button");
         deleteListButton.classList.add("btn");
         deleteListButton.classList.add("text-hoverable-light");
+        deleteListButton.title = "Delete list";
 
-        const icon = document.createElement("i");
+        let icon = document.createElement("i");
         icon.classList.add("fa-solid");
         icon.classList.add("fa-xmark");
 
         deleteListButton.appendChild(icon);
 
+        icon = document.createElement("i");
+        icon.classList.add("fa-solid");
+        icon.classList.add("fa-pen");
+        icon.classList.add("fa-sm");
+
+        editListButton.appendChild(icon);
+
+        listItem.appendChild(editListButton);
         listItem.appendChild(deleteListButton);
       }
 
@@ -210,16 +224,30 @@ export class Display {
 
       listItem.appendChild(taskContainer);
 
+      const editTaskButton = document.createElement("button");
+      editTaskButton.classList.add("btn");
+      editTaskButton.classList.add("text-hoverable-dark");
+      editTaskButton.title = "Edit task";
+
       const deleteTaskButton = document.createElement("button");
       deleteTaskButton.classList.add("btn");
       deleteTaskButton.classList.add("text-hoverable-dark");
+      deleteTaskButton.title = "Delete task";
 
-      const icon = document.createElement("i");
+      let icon = document.createElement("i");
       icon.classList.add("fa-solid");
       icon.classList.add("fa-xmark");
 
       deleteTaskButton.appendChild(icon);
 
+      icon = document.createElement("i");
+      icon.classList.add("fa-solid");
+      icon.classList.add("fa-pen");
+      icon.classList.add("fa-sm");
+
+      editTaskButton.appendChild(icon);
+
+      listItem.appendChild(editTaskButton);
       listItem.appendChild(deleteTaskButton);
 
       tasks.appendChild(listItem);
@@ -422,12 +450,15 @@ export class Display {
       const listIndex = Number(
         document.getElementById(`list${i}`).getAttribute("id").slice(-1)
       );
-      list.firstElementChild.addEventListener("click", () => {
+      list.children[0].addEventListener("click", () => {
         this.displayList(listIndex);
       });
-      //Main list cannot be deleted
+      //Main list cannot be deleted nor edited
       if (i !== 0) {
-        list.lastElementChild.addEventListener("click", () => {
+        list.children[1].addEventListener("click", () => {
+          console.log("Edit list button clicked!");
+        });
+        list.children[2].addEventListener("click", () => {
           this.deleteList(listIndex);
         });
       }
@@ -442,7 +473,10 @@ export class Display {
       const taskIndex = Number(
         document.getElementById(`to-do-task${i}`).getAttribute("id").slice(-1)
       );
-      task.lastElementChild.addEventListener("click", () => {
+      task.children[1].addEventListener("click", () => {
+        console.log("Edit task button clicked!");
+      });
+      task.children[2].addEventListener("click", () => {
         this.deleteTask(taskIndex);
       });
     }

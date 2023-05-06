@@ -189,7 +189,7 @@ li {
 
 .list-item {
   display: grid;
-  grid-template-columns: 1fr 3ch;
+  grid-template-columns: 1fr 3ch 3ch;
   align-items: center;
 }
 

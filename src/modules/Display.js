@@ -20,7 +20,7 @@ export class Display {
 
     let icon = document.createElement("i");
     icon.classList.add("fa-solid");
-    icon.classList.add("fa-list-check");
+    icon.classList.add("fa-note-sticky");
 
     let text = document.createTextNode(" ToDo Notes");
 

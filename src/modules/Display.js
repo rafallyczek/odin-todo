@@ -33,9 +33,10 @@ export class Display {
     const sidebar = document.createElement("aside");
     sidebar.classList.add("bgc-primary");
 
-    //List of todo lists
+    //Section containing lists
     const listsContainer = document.createElement("section");
 
+    //Title
     const listsHeader = document.createElement("h2");
 
     icon = document.createElement("i");
@@ -46,9 +47,11 @@ export class Display {
     listsHeader.appendChild(icon);
     listsHeader.appendChild(text);
 
+    //List of todo lists
     const lists = document.createElement("ul");
     lists.id = "lists";
 
+    //Button which show new list form
     const newListButton = document.createElement("button");
     newListButton.classList.add("btn");
     newListButton.classList.add("text-hoverable-light");
@@ -62,22 +65,25 @@ export class Display {
     newListButton.appendChild(icon);
     newListButton.appendChild(text);
 
+    //New list form
     const newListForm = document.createElement("div");
     newListForm.classList.add("form");
     newListForm.id = "new-list-form";
 
-    const inputGroup = document.createElement("div");
+    //New list's title input
+    let inputGroup = document.createElement("div");
     inputGroup.classList.add("input-group");
-    const titleLabel = document.createElement("label");
+    let titleLabel = document.createElement("label");
     titleLabel.textContent = "Title";
     titleLabel.htmlFor = "list-title";
-    const titleField = document.createElement("input");
+    let titleField = document.createElement("input");
     titleField.id = "list-title";
     titleField.type = "text";
     inputGroup.appendChild(titleLabel);
     inputGroup.appendChild(titleField);
 
-    const cancelButton = document.createElement("button");
+    //Button which hides new list form
+    let cancelButton = document.createElement("button");
     cancelButton.classList.add("cancel-btn");
     cancelButton.classList.add("text-clr-light");
     cancelButton.id = "new-list-cancel";
@@ -92,10 +98,48 @@ export class Display {
     newListForm.appendChild(cancelButton);
     newListForm.appendChild(addButton);
 
+    //Edit list form
+    const editListForm = document.createElement("dialog");
+    editListForm.id = "edit-list-form";
+
+    const editListContent = document.createElement("div");
+    editListContent.classList.add("dialog-content");
+
+    //Edit list's title input
+    inputGroup = document.createElement("div");
+    inputGroup.classList.add("input-group");
+    titleLabel = document.createElement("label");
+    titleLabel.textContent = "Title";
+    titleLabel.htmlFor = "edit-list-title";
+    titleField = document.createElement("input");
+    titleField.id = "edit-list-title";
+    titleField.type = "text";
+    inputGroup.appendChild(titleLabel);
+    inputGroup.appendChild(titleField);
+
+    //Button which hides edit list form
+    cancelButton = document.createElement("button");
+    cancelButton.classList.add("cancel-btn");
+    cancelButton.classList.add("text-clr-light");
+    cancelButton.id = "edit-list-cancel";
+    cancelButton.textContent = "Cancel";
+    const saveButton = document.createElement("button");
+    saveButton.classList.add("submit-btn");
+    saveButton.classList.add("text-clr-light");
+    saveButton.id = "edit-list-save";
+    saveButton.textContent = "Save";
+
+    editListContent.appendChild(inputGroup);
+    editListContent.appendChild(cancelButton);
+    editListContent.appendChild(saveButton);
+
+    editListForm.appendChild(editListContent);
+
     listsContainer.appendChild(listsHeader);
     listsContainer.appendChild(lists);
     listsContainer.appendChild(newListButton);
     listsContainer.appendChild(newListForm);
+    listsContainer.appendChild(editListForm);
 
     //Footer
     const footer = document.createElement("footer");
@@ -128,9 +172,10 @@ export class Display {
     content.appendChild(main);
 
     //Add avent listeners
+    this.attachNewListAddEventListener();
     this.attachNewListButtonEventListener();
     this.attachNewListCancelEventListener();
-    this.attachNewListAddEventListener();
+    this.attachEditListCancelEventLitener();
   }
 
   static displayLists() {
@@ -253,6 +298,7 @@ export class Display {
       tasks.appendChild(listItem);
     }
 
+    //Button which opens new task form
     const newTaskButton = document.createElement("button");
     newTaskButton.classList.add("btn");
     newTaskButton.classList.add("text-hoverable-dark");
@@ -264,39 +310,43 @@ export class Display {
     newTaskButton.appendChild(icon);
     newTaskButton.appendChild(text);
 
+    //New task form
     const newTaskForm = document.createElement("div");
     newTaskForm.classList.add("form");
     newTaskForm.id = "new-task-form";
 
+    //New task's title input
     let inputGroup = document.createElement("div");
     inputGroup.classList.add("input-group");
-    const titleLabel = document.createElement("label");
+    let titleLabel = document.createElement("label");
     titleLabel.textContent = "Title";
     titleLabel.htmlFor = "task-title";
-    const titleField = document.createElement("input");
+    let titleField = document.createElement("input");
     titleField.id = "task-title";
     titleField.type = "text";
     inputGroup.appendChild(titleLabel);
     inputGroup.appendChild(titleField);
     newTaskForm.appendChild(inputGroup);
 
+    //New task's description input
     inputGroup = document.createElement("div");
     inputGroup.classList.add("input-group");
-    const descriptionLabel = document.createElement("label");
+    let descriptionLabel = document.createElement("label");
     descriptionLabel.textContent = "Description";
     descriptionLabel.htmlFor = "task-description";
-    const descriptionField = document.createElement("textarea");
+    let descriptionField = document.createElement("textarea");
     descriptionField.id = "task-description";
     inputGroup.appendChild(descriptionLabel);
     inputGroup.appendChild(descriptionField);
     newTaskForm.appendChild(inputGroup);
 
+    //New task's date input
     inputGroup = document.createElement("div");
     inputGroup.classList.add("input-group");
-    const dateLabel = document.createElement("label");
+    let dateLabel = document.createElement("label");
     dateLabel.textContent = "Date";
     dateLabel.htmlFor = "task-date";
-    const dateField = document.createElement("input");
+    let dateField = document.createElement("input");
     dateField.id = "task-date";
     dateField.type = "date";
     dateField.valueAsDate = new Date();
@@ -304,7 +354,8 @@ export class Display {
     inputGroup.appendChild(dateField);
     newTaskForm.appendChild(inputGroup);
 
-    const cancelButton = document.createElement("button");
+    //Button which hides new task form
+    let cancelButton = document.createElement("button");
     cancelButton.classList.add("cancel-btn");
     cancelButton.classList.add("text-clr-light");
     cancelButton.id = "new-task-cancel";
@@ -318,16 +369,81 @@ export class Display {
     newTaskForm.appendChild(cancelButton);
     newTaskForm.appendChild(addButton);
 
+    //Edit task form
+    const editTaskForm = document.createElement("dialog");
+    editTaskForm.id = "edit-task-form";
+
+    const editTaskContent = document.createElement("div");
+    editTaskContent.classList.add("dialog-content");
+
+    //Edit task's title input
+    inputGroup = document.createElement("div");
+    inputGroup.classList.add("input-group");
+    titleLabel = document.createElement("label");
+    titleLabel.textContent = "Title";
+    titleLabel.htmlFor = "edit-task-title";
+    titleField = document.createElement("input");
+    titleField.id = "edit-task-title";
+    titleField.type = "text";
+    inputGroup.appendChild(titleLabel);
+    inputGroup.appendChild(titleField);
+    editTaskContent.appendChild(inputGroup);
+
+    //Edit task's description input
+    inputGroup = document.createElement("div");
+    inputGroup.classList.add("input-group");
+    descriptionLabel = document.createElement("label");
+    descriptionLabel.textContent = "Description";
+    descriptionLabel.htmlFor = "edit-task-description";
+    descriptionField = document.createElement("textarea");
+    descriptionField.id = "edit-task-description";
+    inputGroup.appendChild(descriptionLabel);
+    inputGroup.appendChild(descriptionField);
+    editTaskContent.appendChild(inputGroup);
+
+    //Edit task's date input
+    inputGroup = document.createElement("div");
+    inputGroup.classList.add("input-group");
+    dateLabel = document.createElement("label");
+    dateLabel.textContent = "Date";
+    dateLabel.htmlFor = "edit-task-date";
+    dateField = document.createElement("input");
+    dateField.id = "edit-task-date";
+    dateField.type = "date";
+    dateField.valueAsDate = new Date();
+    inputGroup.appendChild(dateLabel);
+    inputGroup.appendChild(dateField);
+    editTaskContent.appendChild(inputGroup);
+
+    //Button which hides edit task form
+    cancelButton = document.createElement("button");
+    cancelButton.classList.add("cancel-btn");
+    cancelButton.classList.add("text-clr-light");
+    cancelButton.id = "edit-task-cancel";
+    cancelButton.textContent = "Cancel";
+    const saveButton = document.createElement("button");
+    saveButton.classList.add("submit-btn");
+    saveButton.classList.add("text-clr-light");
+    saveButton.id = "edit-task-save";
+    saveButton.textContent = "Save";
+
+    editTaskContent.appendChild(cancelButton);
+    editTaskContent.appendChild(saveButton);
+
+    editTaskForm.appendChild(editTaskContent);
+
     main.appendChild(boardHeader);
     main.appendChild(tasks);
     main.appendChild(newTaskButton);
     main.appendChild(newTaskForm);
+    main.appendChild(editTaskForm);
 
     //Add avent listeners to task's elements
+    this.attachTasksEventListeners();
     this.attachNewTaskButtonEventListener();
     this.attachNewTaskCancelEventListener();
     this.attachNewTaskAddEventListener();
-    this.attachTasksEventListeners();
+    this.attachEditTaskCancelEventLitener();
   }
 
   //Content clearing functions
@@ -367,6 +483,15 @@ export class Display {
       newListForm.style.display = "none";
       newListInput.value = "";
       newListButton.style.display = "block";
+    });
+  }
+
+  //Hide edit list form modal
+  static attachEditListCancelEventLitener() {
+    const editListCancel = document.getElementById("edit-list-cancel");
+    editListCancel.addEventListener("click", () => {
+      const editListForm = document.getElementById("edit-list-form");
+      editListForm.close();
     });
   }
 
@@ -416,6 +541,15 @@ export class Display {
     });
   }
 
+  //Hide edit task form modal
+  static attachEditTaskCancelEventLitener() {
+    const editTaskCancel = document.getElementById("edit-task-cancel");
+    editTaskCancel.addEventListener("click", () => {
+      const editTaskForm = document.getElementById("edit-task-form");
+      editTaskForm.close();
+    });
+  }
+
   //Add new task and hide form
   static attachNewTaskAddEventListener() {
     const newTaskAdd = document.getElementById("new-task-add");
@@ -430,7 +564,11 @@ export class Display {
         const listIndex = Number(
           main.getAttribute("data-displayed-list-index")
         );
-        Board.getList(listIndex).addToDoTask(newTaskTitle.value, newTaskDescription.value, newTaskDate.value);
+        Board.getList(listIndex).addToDoTask(
+          newTaskTitle.value,
+          newTaskDescription.value,
+          newTaskDate.value
+        );
         newTaskForm.style.display = "none";
         newTaskButton.style.display = "block";
         this.clearMain();
@@ -456,7 +594,8 @@ export class Display {
       //Main list cannot be deleted nor edited
       if (i !== 0) {
         list.children[1].addEventListener("click", () => {
-          console.log("Edit list button clicked!");
+          const editListForm = document.getElementById("edit-list-form");
+          editListForm.showModal();
         });
         list.children[2].addEventListener("click", () => {
           this.deleteList(listIndex);
@@ -474,7 +613,8 @@ export class Display {
         document.getElementById(`to-do-task${i}`).getAttribute("id").slice(-1)
       );
       task.children[1].addEventListener("click", () => {
-        console.log("Edit task button clicked!");
+        const editTaskForm = document.getElementById("edit-task-form");
+        editTaskForm.showModal();
       });
       task.children[2].addEventListener("click", () => {
         this.deleteTask(taskIndex);

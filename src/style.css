@@ -166,6 +166,17 @@ label {
   width: 218px;
 }
 
+dialog{
+  border: 1px solid var(--clr-dark);
+  border-radius: .5rem;
+}
+
+.dialog-content{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
 #new-list-form,
 #new-task-form {
   display: none;

@@ -10,6 +10,10 @@ export class ToDoList {
         return this.title;
     }
 
+    getToDoTask(index){
+        return this.toDoTasks[index];
+    }
+
     getToDoTasks(){
         return this.toDoTasks;
     }

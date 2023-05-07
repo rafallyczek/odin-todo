@@ -595,6 +595,8 @@ export class Display {
       if (i !== 0) {
         list.children[1].addEventListener("click", () => {
           const editListForm = document.getElementById("edit-list-form");
+          const titleField = document.getElementById("edit-list-title");
+          titleField.value = Board.getList(listIndex).getTitle();
           editListForm.showModal();
         });
         list.children[2].addEventListener("click", () => {
@@ -614,6 +616,16 @@ export class Display {
       );
       task.children[1].addEventListener("click", () => {
         const editTaskForm = document.getElementById("edit-task-form");
+        const main = document.querySelector("main");
+        const displayedListIndex = Number(
+          main.getAttribute("data-displayed-list-index")
+        );
+        const titleField = document.getElementById("edit-task-title");
+        const descriptionField = document.getElementById("edit-task-description");
+        const dateField = document.getElementById("edit-task-date");
+        titleField.value = Board.getList(displayedListIndex).getToDoTask(taskIndex).getTitle();
+        descriptionField.value = Board.getList(displayedListIndex).getToDoTask(taskIndex).getDescription();
+        dateField.value = Board.getList(displayedListIndex).getToDoTask(taskIndex).getDate();
         editTaskForm.showModal();
       });
       task.children[2].addEventListener("click", () => {

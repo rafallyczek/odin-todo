@@ -103,7 +103,7 @@ export class Display {
     editListForm.id = "edit-list-form";
 
     const editListContent = document.createElement("div");
-    editListContent.classList.add("dialog-content");
+    editListContent.classList.add("form");
 
     //Edit list's title input
     inputGroup = document.createElement("div");
@@ -374,7 +374,7 @@ export class Display {
     editTaskForm.id = "edit-task-form";
 
     const editTaskContent = document.createElement("div");
-    editTaskContent.classList.add("dialog-content");
+    editTaskContent.classList.add("form");
 
     //Edit task's title input
     inputGroup = document.createElement("div");

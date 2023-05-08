@@ -70,6 +70,10 @@ export class Display {
     newListForm.classList.add("form");
     newListForm.id = "new-list-form";
 
+    let formTitle = document.createElement("h3");
+    formTitle.textContent = "Add list";
+    newListForm.appendChild(formTitle);
+
     //New list's title input
     let inputGroup = document.createElement("div");
     inputGroup.classList.add("input-group");
@@ -104,6 +108,10 @@ export class Display {
 
     const editListContent = document.createElement("div");
     editListContent.classList.add("form");
+
+    formTitle = document.createElement("h3");
+    formTitle.textContent = "Edit list";
+    editListContent.appendChild(formTitle);
 
     //Edit list's title input
     inputGroup = document.createElement("div");
@@ -315,6 +323,10 @@ export class Display {
     newTaskForm.classList.add("form");
     newTaskForm.id = "new-task-form";
 
+    let formTitle = document.createElement("h3");
+    formTitle.textContent = "Add task";
+    newTaskForm.appendChild(formTitle);
+
     //New task's title input
     let inputGroup = document.createElement("div");
     inputGroup.classList.add("input-group");
@@ -375,6 +387,10 @@ export class Display {
 
     const editTaskContent = document.createElement("div");
     editTaskContent.classList.add("form");
+
+    formTitle = document.createElement("h3");
+    formTitle.textContent = "Edit task";
+    editTaskContent.appendChild(formTitle);
 
     //Edit task's title input
     inputGroup = document.createElement("div");

@@ -180,10 +180,11 @@ export class Display {
     content.appendChild(main);
 
     //Add avent listeners
-    this.attachNewListAddEventListener();
     this.attachNewListButtonEventListener();
     this.attachNewListCancelEventListener();
-    this.attachEditListCancelEventLitener();
+    this.attachNewListAddEventListener();
+    this.attachEditListCancelEventListener();
+    this.attachEditListSaveEventListener();
   }
 
   static displayLists() {
@@ -460,6 +461,7 @@ export class Display {
     this.attachNewTaskCancelEventListener();
     this.attachNewTaskAddEventListener();
     this.attachEditTaskCancelEventLitener();
+    this.attachEditTaskSaveEventListener();
   }
 
   //Content clearing functions
@@ -502,15 +504,6 @@ export class Display {
     });
   }
 
-  //Hide edit list form modal
-  static attachEditListCancelEventLitener() {
-    const editListCancel = document.getElementById("edit-list-cancel");
-    editListCancel.addEventListener("click", () => {
-      const editListForm = document.getElementById("edit-list-form");
-      editListForm.close();
-    });
-  }
-
   //Add new list and hide form
   static attachNewListAddEventListener() {
     const newListAdd = document.getElementById("new-list-add");
@@ -526,6 +519,29 @@ export class Display {
         this.displayLists();
       }
       newListInput.value = "";
+    });
+  }
+
+  //Hide edit list form modal
+  static attachEditListCancelEventListener() {
+    const editListCancel = document.getElementById("edit-list-cancel");
+    editListCancel.addEventListener("click", () => {
+      const editListForm = document.getElementById("edit-list-form");
+      editListForm.close();
+    });
+  }
+
+  static attachEditListSaveEventListener() {
+    const editListSave = document.getElementById("edit-list-save");
+    editListSave.addEventListener("click", () => {
+      const editListForm = document.getElementById("edit-list-form");
+      const listIndex = Number(editListForm.getAttribute("edit-list-index"));
+      const titleField = document.getElementById("edit-list-title");
+      if (titleField.value.trim() !== "") {
+        this.editList(listIndex, titleField.value);
+        editListForm.close();
+      }
+      titleField.value = "";
     });
   }
 
@@ -554,15 +570,6 @@ export class Display {
       newTaskDescription.value = "";
       newTaskDate.valueAsDate = new Date();
       newTaskButton.style.display = "block";
-    });
-  }
-
-  //Hide edit task form modal
-  static attachEditTaskCancelEventLitener() {
-    const editTaskCancel = document.getElementById("edit-task-cancel");
-    editTaskCancel.addEventListener("click", () => {
-      const editTaskForm = document.getElementById("edit-task-form");
-      editTaskForm.close();
     });
   }
 
@@ -596,6 +603,36 @@ export class Display {
     });
   }
 
+  //Hide edit task form modal
+  static attachEditTaskCancelEventLitener() {
+    const editTaskCancel = document.getElementById("edit-task-cancel");
+    editTaskCancel.addEventListener("click", () => {
+      const editTaskForm = document.getElementById("edit-task-form");
+      editTaskForm.close();
+    });
+  }
+
+  static attachEditTaskSaveEventListener() {
+    const editTaskSave = document.getElementById("edit-task-save");
+    editTaskSave.addEventListener("click", () => {
+      const editTaskForm = document.getElementById("edit-task-form");
+      const taskIndex = Number(editTaskForm.getAttribute("edit-task-index"));
+      const titleField = document.getElementById("edit-task-title");
+      const descriptionField = document.getElementById("edit-task-description");
+      const dateField = document.getElementById("edit-task-date");
+      if (titleField.value.trim() !== "") {
+        this.editTask(
+          taskIndex,
+          titleField.value,
+          descriptionField.value,
+          dateField.value
+        );
+        editTaskForm.close();
+      }
+      titleField.value = "";
+    });
+  }
+
   //Display list in main or delete list when button is clicked
   static attachListsEventListeners() {
     const lists = document.getElementById("lists").children;
@@ -611,6 +648,7 @@ export class Display {
       if (i !== 0) {
         list.children[1].addEventListener("click", () => {
           const editListForm = document.getElementById("edit-list-form");
+          editListForm.setAttribute("edit-list-index", listIndex);
           const titleField = document.getElementById("edit-list-title");
           titleField.value = Board.getList(listIndex).getTitle();
           editListForm.showModal();
@@ -632,16 +670,25 @@ export class Display {
       );
       task.children[1].addEventListener("click", () => {
         const editTaskForm = document.getElementById("edit-task-form");
+        editTaskForm.setAttribute("edit-task-index", taskIndex);
         const main = document.querySelector("main");
         const displayedListIndex = Number(
           main.getAttribute("data-displayed-list-index")
         );
         const titleField = document.getElementById("edit-task-title");
-        const descriptionField = document.getElementById("edit-task-description");
+        const descriptionField = document.getElementById(
+          "edit-task-description"
+        );
         const dateField = document.getElementById("edit-task-date");
-        titleField.value = Board.getList(displayedListIndex).getToDoTask(taskIndex).getTitle();
-        descriptionField.value = Board.getList(displayedListIndex).getToDoTask(taskIndex).getDescription();
-        dateField.value = Board.getList(displayedListIndex).getToDoTask(taskIndex).getDate();
+        titleField.value = Board.getList(displayedListIndex)
+          .getToDoTask(taskIndex)
+          .getTitle();
+        descriptionField.value = Board.getList(displayedListIndex)
+          .getToDoTask(taskIndex)
+          .getDescription();
+        dateField.value = Board.getList(displayedListIndex)
+          .getToDoTask(taskIndex)
+          .getDate();
         editTaskForm.showModal();
       });
       task.children[2].addEventListener("click", () => {
@@ -681,6 +728,37 @@ export class Display {
       main.getAttribute("data-displayed-list-index")
     );
     Board.getList(displayedListIndex).deleteToDoTask(taskIndex);
+    this.clearMain();
+    this.displayMain(displayedListIndex);
+  }
+
+  //Handle list modification
+  static editList(listIndex, title) {
+    Board.getList(listIndex).setTitle(title);
+    this.clearLists();
+    this.displayLists();
+    const main = document.querySelector("main");
+    const displayedListIndex = Number(
+      main.getAttribute("data-displayed-list-index")
+    );
+    //If currently displayed list is deleted refresh main
+    if (displayedListIndex === listIndex) {
+      this.clearMain();
+      this.displayMain(listIndex);
+    }
+  }
+
+  //Handle task modification
+  static editTask(taskIndex, title, description, date) {
+    const main = document.querySelector("main");
+    const displayedListIndex = Number(
+      main.getAttribute("data-displayed-list-index")
+    );
+    Board.getList(displayedListIndex).getToDoTask(taskIndex).setTitle(title);
+    Board.getList(displayedListIndex)
+      .getToDoTask(taskIndex)
+      .setDescription(description);
+    Board.getList(displayedListIndex).getToDoTask(taskIndex).setDate(date);
     this.clearMain();
     this.displayMain(displayedListIndex);
   }

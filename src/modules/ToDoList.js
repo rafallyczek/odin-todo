@@ -22,6 +22,10 @@ export class ToDoList {
         return this.toDoTasks;
     }
 
+    setToDoTasks(toDoTasks){
+        this.toDoTasks = toDoTasks;
+    }
+
     addToDoTask(title, description, date){
         this.toDoTasks.push(new ToDoTask(title, description, date));
     }

@@ -1,14 +1,24 @@
 import { ToDoList } from "./ToDoList.js";
+import { Storage } from "./Storage.js";
 
 //Board contains todo lists
 export class Board {
   static board = [];
   static {
     this.board.push(new ToDoList("Main list"));
+    if(Storage.isEmpty()){
+      Storage.save(this.board);
+    }else{
+      this.setBoard(Storage.load());
+    }
   }
 
   static getBoard() {
     return this.board;
+  }
+
+  static setBoard(board){
+    this.board = board;
   }
 
   static getList(index){

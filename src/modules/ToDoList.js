@@ -30,6 +30,12 @@ export class ToDoList {
         this.toDoTasks.push(new ToDoTask(title, description, date));
     }
 
+    editToDoTask(index, title, description, date){
+        this.getToDoTask(index).setTitle(title);
+        this.getToDoTask(index).setDescription(description);
+        this.getToDoTask(index).setDate(date);
+    }
+
     deleteToDoTask(index){
         this.toDoTasks.splice(index, 1);
     }

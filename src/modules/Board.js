@@ -29,6 +29,10 @@ export class Board {
     this.board.push(new ToDoList(title));
   }
 
+  static editList(index, title){
+    this.getList(index).setTitle(title);
+  }
+
   static deleteList(index){
     //Main list cannot be deleted
     if(index!==0){

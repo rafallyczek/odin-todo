@@ -734,7 +734,7 @@ export class Display {
 
   //Handle list modification
   static editList(listIndex, title) {
-    Board.getList(listIndex).setTitle(title);
+    Board.editList(listIndex, title);
     this.clearLists();
     this.displayLists();
     const main = document.querySelector("main");
@@ -754,11 +754,7 @@ export class Display {
     const displayedListIndex = Number(
       main.getAttribute("data-displayed-list-index")
     );
-    Board.getList(displayedListIndex).getToDoTask(taskIndex).setTitle(title);
-    Board.getList(displayedListIndex)
-      .getToDoTask(taskIndex)
-      .setDescription(description);
-    Board.getList(displayedListIndex).getToDoTask(taskIndex).setDate(date);
+    Board.getList(displayedListIndex).editToDoTask(taskIndex, title, description, date);
     this.clearMain();
     this.displayMain(displayedListIndex);
   }

@@ -6,37 +6,41 @@ export class Board {
   static board = [];
   static {
     this.board.push(new ToDoList("Main list"));
-    if(Storage.isEmpty()){
+    if (Storage.isEmpty()) {
       Storage.save(this.board);
-    }else{
+    } else {
       this.setBoard(Storage.load());
     }
+    console.log(this.board);
   }
 
   static getBoard() {
     return this.board;
   }
 
-  static setBoard(board){
+  static setBoard(board) {
     this.board = board;
   }
 
-  static getList(index){
+  static getList(index) {
     return this.board[index];
   }
 
-  static addList(title){
+  static addList(title) {
     this.board.push(new ToDoList(title));
+    Storage.save();
   }
 
-  static editList(index, title){
+  static editList(index, title) {
     this.getList(index).setTitle(title);
+    Storage.save();
   }
 
-  static deleteList(index){
+  static deleteList(index) {
     //Main list cannot be deleted
-    if(index!==0){
+    if (index !== 0) {
       this.board.splice(index, 1);
+      Storage.save();
     }
   }
 }

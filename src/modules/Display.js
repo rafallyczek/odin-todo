@@ -754,7 +754,12 @@ export class Display {
     const displayedListIndex = Number(
       main.getAttribute("data-displayed-list-index")
     );
-    Board.getList(displayedListIndex).editToDoTask(taskIndex, title, description, date);
+    Board.getList(displayedListIndex).editToDoTask(
+      taskIndex,
+      title,
+      description,
+      date
+    );
     this.clearMain();
     this.displayMain(displayedListIndex);
   }

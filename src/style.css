@@ -46,6 +46,7 @@ h3 {
   display: grid;
   grid-template: 70px 1fr / 250px 1fr;
   height: 100%;
+  transition: 300ms;
 }
 
 header {
@@ -56,6 +57,7 @@ header {
 }
 
 aside {
+  position: relative;
   display: grid;
   grid-template-rows: 1fr 50px;
 }
@@ -124,6 +126,25 @@ footer {
   background-color: var(--clr-light);
   border: 1px solid var(--clr-secondary);
   color: var(--clr-secondary);
+}
+
+.toggle{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Sidebar utility */
+
+.hidden{
+  display: none;
+}
+
+.collapsed{
+  grid-template-columns: 50px 1fr;
 }
 
 /* Inputs */

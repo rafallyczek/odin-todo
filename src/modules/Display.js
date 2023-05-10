@@ -30,7 +30,25 @@ export class Display {
 
     //Sidebar
     const sidebar = document.createElement("aside");
+    sidebar.setAttribute("data-collapsed", false);
     sidebar.classList.add("bgc-primary");
+
+    //Toggle to show/hide sidebar
+    const sidebarToggle = document.createElement("button");
+    sidebarToggle.classList.add("toggle");
+    sidebarToggle.classList.add("text-hoverable-light");
+    sidebarToggle.title = "Hide sidebar";
+    icon = document.createElement("i");
+    icon.classList.add("fa-solid");
+    icon.classList.add("fa-caret-left");
+    icon.classList.add("fa-2xl");
+    sidebarToggle.appendChild(icon);
+    icon = document.createElement("i");
+    icon.classList.add("fa-solid");
+    icon.classList.add("fa-caret-right");
+    icon.classList.add("fa-2xl");
+    icon.classList.add("hidden");
+    sidebarToggle.appendChild(icon);
 
     //Section containing lists
     const listsContainer = document.createElement("section");
@@ -165,6 +183,7 @@ export class Display {
 
     footer.appendChild(authorInfo);
 
+    sidebar.appendChild(sidebarToggle);
     sidebar.appendChild(listsContainer);
     sidebar.appendChild(footer);
 
@@ -180,6 +199,7 @@ export class Display {
     content.appendChild(main);
 
     //Add avent listeners
+    this.attachToggleEventListener();
     this.attachNewListButtonEventListener();
     this.attachNewListCancelEventListener();
     this.attachNewListAddEventListener();
@@ -484,6 +504,34 @@ export class Display {
   }
 
   //Attaching event listeners
+
+  //Show/hide sidebar
+  static attachToggleEventListener() {
+    const toggle = document.querySelector(".toggle");
+    toggle.addEventListener("click", () => {
+      const content = document.querySelector(".content");
+      const sidebar = document.querySelector("aside");
+      const listsContainer = document.querySelector("section");
+      const footer = document.querySelector("footer");
+      if(sidebar.getAttribute("data-collapsed") === "false"){
+        toggle.firstElementChild.classList.add("hidden");
+        toggle.lastElementChild.classList.remove("hidden");
+        toggle.title = "Show sidebar";
+        sidebar.setAttribute("data-collapsed", true);
+        content.classList.add("collapsed");
+        listsContainer.classList.add("hidden");
+        footer.classList.add("hidden");
+      }else{
+        toggle.firstElementChild.classList.remove("hidden");
+        toggle.lastElementChild.classList.add("hidden");
+        toggle.title = "Hide sidebar";
+        sidebar.setAttribute("data-collapsed", false);
+        content.classList.remove("collapsed");
+        listsContainer.classList.remove("hidden");
+        footer.classList.remove("hidden");
+      }
+    });
+  }
 
   //Display new list form when Add new list button is clicked
   static attachNewListButtonEventListener() {

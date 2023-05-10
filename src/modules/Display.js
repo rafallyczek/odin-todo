@@ -16,12 +16,11 @@ export class Display {
     const header = document.createElement("header");
     header.classList.add("bgc-dark");
 
+    //Header title
     const pageTitle = document.createElement("h1");
-
     let icon = document.createElement("i");
     icon.classList.add("fa-solid");
     icon.classList.add("fa-note-sticky");
-
     let text = document.createTextNode(" ToDo Notes");
 
     pageTitle.appendChild(icon);
@@ -36,9 +35,8 @@ export class Display {
     //Section containing lists
     const listsContainer = document.createElement("section");
 
-    //Title
+    //Sidebar title
     const listsHeader = document.createElement("h2");
-
     icon = document.createElement("i");
     icon.classList.add("fa-solid");
     icon.classList.add("fa-list");
@@ -56,7 +54,6 @@ export class Display {
     newListButton.classList.add("btn");
     newListButton.classList.add("text-hoverable-light");
     newListButton.id = "new-list-btn";
-
     icon = document.createElement("i");
     icon.classList.add("fa-solid");
     icon.classList.add("fa-plus");
@@ -70,6 +67,7 @@ export class Display {
     newListForm.classList.add("form");
     newListForm.id = "new-list-form";
 
+    //New list form's title
     let formTitle = document.createElement("h3");
     formTitle.textContent = "Add list";
     newListForm.appendChild(formTitle);
@@ -109,6 +107,7 @@ export class Display {
     const editListContent = document.createElement("div");
     editListContent.classList.add("form");
 
+    //Edit list form's title
     formTitle = document.createElement("h3");
     formTitle.textContent = "Edit list";
     editListContent.appendChild(formTitle);
@@ -152,6 +151,7 @@ export class Display {
     //Footer
     const footer = document.createElement("footer");
 
+    //Footer text
     const authorInfo = document.createElement("p");
     const github = document.createElement("a");
     github.classList.add("text-hoverable-light");
@@ -187,10 +187,10 @@ export class Display {
     this.attachEditListSaveEventListener();
   }
 
+  //Displays lists in sidebar
   static displayLists() {
     const lists = document.getElementById("lists");
     for (const [index, list] of Board.getBoard().entries()) {
-      //ToDoList
       const listItem = document.createElement("li");
       listItem.classList.add("list-item");
       listItem.classList.add("text-hoverable-light");
@@ -201,6 +201,7 @@ export class Display {
 
       listItem.appendChild(listTitle);
 
+      //Adding buttons
       //Main list cannot be deleted nor edited
       if (index !== 0) {
         const editListButton = document.createElement("button");
@@ -237,9 +238,11 @@ export class Display {
     this.attachListsEventListeners();
   }
 
+  //Display list's details in main
   static displayMain(listIndex) {
     const list = Board.getList(listIndex);
     const main = document.querySelector("main");
+    //Save currently displayed list index
     main.setAttribute("data-displayed-list-index", listIndex);
 
     const boardHeader = document.createElement("h2");
@@ -248,6 +251,7 @@ export class Display {
     const tasks = document.createElement("ul");
     tasks.id = "tasks";
 
+    //Display tasks of list
     for (const [index, todotask] of Board.getList(listIndex)
       .getToDoTasks()
       .entries()) {
@@ -278,6 +282,7 @@ export class Display {
 
       listItem.appendChild(taskContainer);
 
+      //Adding buttons
       const editTaskButton = document.createElement("button");
       editTaskButton.classList.add("btn");
       editTaskButton.classList.add("text-hoverable-dark");
@@ -531,6 +536,7 @@ export class Display {
     });
   }
 
+  //Hide edit list form modal after saving
   static attachEditListSaveEventListener() {
     const editListSave = document.getElementById("edit-list-save");
     editListSave.addEventListener("click", () => {
@@ -612,6 +618,7 @@ export class Display {
     });
   }
 
+  //Hide edit task form modal after saving
   static attachEditTaskSaveEventListener() {
     const editTaskSave = document.getElementById("edit-task-save");
     editTaskSave.addEventListener("click", () => {
@@ -641,11 +648,15 @@ export class Display {
       const listIndex = Number(
         document.getElementById(`list${i}`).getAttribute("id").slice(-1)
       );
+
+      //Display chosen list's details in main
       list.children[0].addEventListener("click", () => {
         this.displayList(listIndex);
       });
+
       //Main list cannot be deleted nor edited
       if (i !== 0) {
+        //Display edit list form modal
         list.children[1].addEventListener("click", () => {
           const editListForm = document.getElementById("edit-list-form");
           editListForm.setAttribute("edit-list-index", listIndex);
@@ -653,6 +664,8 @@ export class Display {
           titleField.value = Board.getList(listIndex).getTitle();
           editListForm.showModal();
         });
+
+        //Handle list deletion
         list.children[2].addEventListener("click", () => {
           this.deleteList(listIndex);
         });
@@ -668,8 +681,11 @@ export class Display {
       const taskIndex = Number(
         document.getElementById(`to-do-task${i}`).getAttribute("id").slice(-1)
       );
+
+      //Display edit task form modal
       task.children[1].addEventListener("click", () => {
         const editTaskForm = document.getElementById("edit-task-form");
+        //Save currently edited task index
         editTaskForm.setAttribute("edit-task-index", taskIndex);
         const main = document.querySelector("main");
         const displayedListIndex = Number(
@@ -691,6 +707,8 @@ export class Display {
           .getDate();
         editTaskForm.showModal();
       });
+
+      //Handle task deletion
       task.children[2].addEventListener("click", () => {
         this.deleteTask(taskIndex);
       });

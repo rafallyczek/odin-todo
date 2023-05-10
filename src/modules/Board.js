@@ -4,10 +4,11 @@ import { Storage } from "./Storage.js";
 //Board contains todo lists
 export class Board {
   static board = [];
-  static {
+
+  static init(){
     if (Storage.isEmpty()) {
       this.board.push(new ToDoList("Main list"));
-      Storage.save(this.board);
+      Storage.save();
     } else {
       this.board = Storage.load();
     }

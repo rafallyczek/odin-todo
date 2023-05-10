@@ -5,21 +5,16 @@ import { Storage } from "./Storage.js";
 export class Board {
   static board = [];
   static {
-    this.board.push(new ToDoList("Main list"));
     if (Storage.isEmpty()) {
+      this.board.push(new ToDoList("Main list"));
       Storage.save(this.board);
     } else {
-      this.setBoard(Storage.load());
+      this.board = Storage.load();
     }
-    console.log(this.board);
   }
 
   static getBoard() {
     return this.board;
-  }
-
-  static setBoard(board) {
-    this.board = board;
   }
 
   static getList(index) {
